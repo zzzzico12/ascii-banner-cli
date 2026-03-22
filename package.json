@@ -1,0 +1,14 @@
+{
+  "name": "ascii-banner-cli",
+  "version": "1.0.0",
+  "description": "CLIツールの起動バナー用ASCIIアートを生成・プレビュー・エクスポートするツール",
+  "type": "module",
+  "bin": {
+    "ascii-banner": "./bin/cli.js"
+  },
+  "scripts": {
+    "start": "node bin/cli.js"
+  },
+  "keywords": ["ascii", "banner", "cli", "art"],
+  "license": "MIT"
+}

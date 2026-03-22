@@ -1,0 +1,351 @@
+#!/usr/bin/env node
+
+// ─────────────────────────────────────────────
+//  ASCII Banner Generator CLI
+//  対話的にASCIIアートバナーを生成し、
+//  好きな言語のコードとしてエクスポートする
+// ─────────────────────────────────────────────
+
+import * as readline from "node:readline";
+import * as fs from "node:fs";
+import * as path from "node:path";
+import { FONTS, DECORATIONS } from "../lib/fonts.js";
+import { renderText, applyDecoration, exportCode } from "../lib/render.js";
+
+// ── ANSI Colors ──
+const c = {
+  reset: "\x1b[0m",
+  bold: "\x1b[1m",
+  dim: "\x1b[2m",
+  cyan: "\x1b[36m",
+  green: "\x1b[32m",
+  yellow: "\x1b[33m",
+  magenta: "\x1b[35m",
+  red: "\x1b[31m",
+  gray: "\x1b[90m",
+  bgGray: "\x1b[48;5;236m",
+  white: "\x1b[97m",
+};
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+function ask(question) {
+  return new Promise((resolve) => rl.question(question, resolve));
+}
+
+function printLine(char = "─", color = c.gray) {
+  console.log(color + char.repeat(56) + c.reset);
+}
+
+function printHeader() {
+  console.clear();
+  console.log();
+  console.log(
+    `${c.cyan}${c.bold}  ╔═══════════════════════════════════════════════╗${c.reset}`
+  );
+  console.log(
+    `${c.cyan}${c.bold}  ║       ASCII  BANNER  GENERATOR                ║${c.reset}`
+  );
+  console.log(
+    `${c.cyan}${c.bold}  ║       CLIバナーを簡単に作成                   ║${c.reset}`
+  );
+  console.log(
+    `${c.cyan}${c.bold}  ╚═══════════════════════════════════════════════╝${c.reset}`
+  );
+  console.log();
+}
+
+// ─────────── Step 1: テキスト入力 ───────────
+async function stepInputText() {
+  console.log(
+    `${c.green}${c.bold}  STEP 1${c.reset}  ${c.white}表示したい文字列を入力してください${c.reset}`
+  );
+  console.log(
+    `${c.gray}  対応文字: A-Z, 0-9, スペース, ハイフン, ドット, アンダースコア${c.reset}`
+  );
+  console.log(
+    `${c.gray}  推奨: 10文字以内${c.reset}`
+  );
+  console.log();
+
+  const text = await ask(`  ${c.cyan}>${c.reset} `);
+
+  if (!text.trim()) {
+    console.log(`\n  ${c.red}文字列を入力してください${c.reset}\n`);
+    return stepInputText();
+  }
+
+  return text.trim();
+}
+
+// ─────────── Step 2: フォント選択 ───────────
+async function stepSelectFont(text) {
+  const fontKeys = Object.keys(FONTS);
+
+  console.log();
+  printLine("─");
+  console.log();
+  console.log(
+    `${c.green}${c.bold}  STEP 2${c.reset}  ${c.white}フォントを選んでください${c.reset}`
+  );
+  console.log();
+
+  for (let i = 0; i < fontKeys.length; i++) {
+    const key = fontKeys[i];
+    const font = FONTS[key];
+    const lines = renderText(text, key);
+
+    console.log(
+      `  ${c.yellow}${c.bold}[${i + 1}]${c.reset} ${c.white}${font.name}${c.reset}`
+    );
+    for (const line of lines) {
+      console.log(`  ${c.cyan}${line}${c.reset}`);
+    }
+    console.log();
+  }
+
+  const choice = await ask(
+    `  ${c.cyan}番号を入力 (1-${fontKeys.length})${c.reset} > `
+  );
+  const idx = parseInt(choice, 10) - 1;
+
+  if (isNaN(idx) || idx < 0 || idx >= fontKeys.length) {
+    console.log(`\n  ${c.red}1〜${fontKeys.length}の番号を入力してください${c.reset}`);
+    return stepSelectFont(text);
+  }
+
+  return fontKeys[idx];
+}
+
+// ─────────── Step 3: 装飾選択 ───────────
+async function stepSelectDecoration(text, fontKey) {
+  const decoKeys = Object.keys(DECORATIONS);
+
+  console.log();
+  printLine("─");
+  console.log();
+  console.log(
+    `${c.green}${c.bold}  STEP 3${c.reset}  ${c.white}装飾を選んでください${c.reset}`
+  );
+  console.log();
+
+  for (let i = 0; i < decoKeys.length; i++) {
+    const key = decoKeys[i];
+    const deco = DECORATIONS[key];
+    const lines = renderText(text, fontKey);
+    const decorated = applyDecoration(lines, key);
+
+    console.log(
+      `  ${c.yellow}${c.bold}[${i + 1}]${c.reset} ${c.white}${deco.name}${c.reset}`
+    );
+    for (const line of decorated) {
+      console.log(`  ${c.magenta}${line}${c.reset}`);
+    }
+    console.log();
+  }
+
+  const choice = await ask(
+    `  ${c.cyan}番号を入力 (1-${decoKeys.length})${c.reset} > `
+  );
+  const idx = parseInt(choice, 10) - 1;
+
+  if (isNaN(idx) || idx < 0 || idx >= decoKeys.length) {
+    console.log(`\n  ${c.red}1〜${decoKeys.length}の番号を入力してください${c.reset}`);
+    return stepSelectDecoration(text, fontKey);
+  }
+
+  return decoKeys[idx];
+}
+
+// ─────────── Step 4: エクスポート形式 ───────────
+async function stepSelectFormat() {
+  const formats = [
+    { key: "raw", name: "プレーンテキスト (.txt)" },
+    { key: "javascript", name: "JavaScript (.js)" },
+    { key: "typescript", name: "TypeScript (.ts)" },
+    { key: "python", name: "Python (.py)" },
+    { key: "rust", name: "Rust (.rs)" },
+    { key: "go", name: "Go (.go)" },
+    { key: "shell", name: "Shell (.sh)" },
+  ];
+
+  console.log();
+  printLine("─");
+  console.log();
+  console.log(
+    `${c.green}${c.bold}  STEP 4${c.reset}  ${c.white}出力形式を選んでください${c.reset}`
+  );
+  console.log();
+
+  for (let i = 0; i < formats.length; i++) {
+    console.log(
+      `  ${c.yellow}${c.bold}[${i + 1}]${c.reset} ${c.white}${formats[i].name}${c.reset}`
+    );
+  }
+  console.log();
+
+  const choice = await ask(
+    `  ${c.cyan}番号を入力 (1-${formats.length})${c.reset} > `
+  );
+  const idx = parseInt(choice, 10) - 1;
+
+  if (isNaN(idx) || idx < 0 || idx >= formats.length) {
+    console.log(`\n  ${c.red}1〜${formats.length}の番号を入力してください${c.reset}`);
+    return stepSelectFormat();
+  }
+
+  return formats[idx].key;
+}
+
+// ─────────── Step 5: 出力 ───────────
+async function stepOutput(text, fontKey, decoKey, format) {
+  const lines = renderText(text, fontKey);
+  const decorated = applyDecoration(lines, decoKey);
+  const code = exportCode(decorated, format);
+
+  console.log();
+  printLine("═", c.green);
+  console.log();
+  console.log(`${c.green}${c.bold}  ✔ 生成完了！${c.reset}`);
+  console.log();
+
+  // プレビュー
+  console.log(`${c.gray}  ── プレビュー ──${c.reset}`);
+  console.log();
+  for (const line of decorated) {
+    console.log(`  ${c.cyan}${line}${c.reset}`);
+  }
+  console.log();
+
+  // ファイル保存の確認
+  printLine("─");
+  console.log();
+  console.log(
+    `${c.white}  ファイルに保存しますか？${c.reset}`
+  );
+  console.log(
+    `  ${c.yellow}[1]${c.reset} ファイルに保存する`
+  );
+  console.log(
+    `  ${c.yellow}[2]${c.reset} ターミナルに表示するだけ（コピペ用）`
+  );
+  console.log(
+    `  ${c.yellow}[3]${c.reset} 最初からやり直す`
+  );
+  console.log();
+
+  const choice = await ask(`  ${c.cyan}>${c.reset} `);
+
+  if (choice.trim() === "1") {
+    // ファイル保存
+    const extMap = {
+      raw: "txt",
+      javascript: "js",
+      typescript: "ts",
+      python: "py",
+      rust: "rs",
+      go: "go",
+      shell: "sh",
+    };
+    const ext = extMap[format] || "txt";
+    const defaultName = `banner.${ext}`;
+
+    console.log();
+    const filename = await ask(
+      `  ${c.cyan}ファイル名 (Enter で ${defaultName})${c.reset} > `
+    );
+    const finalName = filename.trim() || defaultName;
+    const outputPath = path.resolve(process.cwd(), finalName);
+
+    fs.writeFileSync(outputPath, code, "utf-8");
+    console.log();
+    console.log(`  ${c.green}${c.bold}✔ 保存しました:${c.reset} ${outputPath}`);
+    console.log();
+    printUsageHint(format, finalName);
+  } else if (choice.trim() === "3") {
+    return main();
+  } else {
+    // ターミナル表示
+    console.log();
+    printLine("─");
+    console.log();
+    console.log(`${c.gray}  ── 以下をコピーしてください ──${c.reset}`);
+    console.log();
+    console.log(code);
+    console.log();
+    printLine("─");
+  }
+
+  // 続けるか確認
+  console.log();
+  const again = await ask(
+    `  ${c.cyan}別のバナーを作りますか？ (y/N)${c.reset} > `
+  );
+  if (again.trim().toLowerCase() === "y") {
+    return main();
+  }
+
+  console.log();
+  console.log(`  ${c.dim}Thanks for using ASCII Banner Generator!${c.reset}`);
+  console.log();
+  rl.close();
+}
+
+function printUsageHint(format, filename) {
+  console.log(`${c.gray}  ── 使い方 ──${c.reset}`);
+  console.log();
+
+  switch (format) {
+    case "javascript":
+      console.log(`  ${c.dim}// あなたのCLIアプリ (例: cli.js) で:${c.reset}`);
+      console.log(`  ${c.white}import { printBanner } from './${filename}';${c.reset}`);
+      console.log(`  ${c.white}printBanner();${c.reset}`);
+      break;
+    case "typescript":
+      console.log(`  ${c.dim}// あなたのCLIアプリで:${c.reset}`);
+      console.log(`  ${c.white}import { printBanner } from './${filename.replace(".ts", "")}';${c.reset}`);
+      console.log(`  ${c.white}printBanner();${c.reset}`);
+      break;
+    case "python":
+      console.log(`  ${c.dim}# あなたのCLIアプリで:${c.reset}`);
+      console.log(`  ${c.white}from ${filename.replace(".py", "")} import print_banner${c.reset}`);
+      console.log(`  ${c.white}print_banner()${c.reset}`);
+      break;
+    case "rust":
+      console.log(`  ${c.dim}// main.rs で:${c.reset}`);
+      console.log(`  ${c.white}mod banner;${c.reset}`);
+      console.log(`  ${c.white}banner::print_banner();${c.reset}`);
+      break;
+    case "go":
+      console.log(`  ${c.dim}// main.go の main() で:${c.reset}`);
+      console.log(`  ${c.white}PrintBanner()${c.reset}`);
+      break;
+    case "shell":
+      console.log(`  ${c.dim}# シェルスクリプトで:${c.reset}`);
+      console.log(`  ${c.white}source ${filename}${c.reset}`);
+      console.log(`  ${c.white}print_banner${c.reset}`);
+      break;
+    default:
+      console.log(`  ${c.dim}ファイルの内容をそのまま使えます${c.reset}`);
+  }
+  console.log();
+}
+
+// ─────────── Main ───────────
+async function main() {
+  printHeader();
+  const text = await stepInputText();
+  const fontKey = await stepSelectFont(text);
+  const decoKey = await stepSelectDecoration(text, fontKey);
+  const format = await stepSelectFormat();
+  await stepOutput(text, fontKey, decoKey, format);
+}
+
+main().catch((err) => {
+  console.error(err);
+  rl.close();
+  process.exit(1);
+});
