@@ -16,7 +16,6 @@ import { renderText, applyDecoration, exportCode } from "../lib/render.js";
 // figletのフォント一覧（代表的なものをキュレーション）
 const FIGLET_FONTS = [
   // ── Classic ──────────────────────────────────────────
-  { key: "Standard",             name: "Standard          — classic ASCII" },
   { key: "Big",                  name: "Big               — thick blocks" },
   { key: "Colossal",             name: "Colossal          — large 8-block" },
   { key: "Banner3",              name: "Banner3           — bold banner" },
@@ -24,7 +23,7 @@ const FIGLET_FONTS = [
   { key: "Broadway",             name: "Broadway          — bold retro" },
   // ── 3D / Depth ───────────────────────────────────────
   { key: "Larry 3D",             name: "Larry 3D          — 3D diagonal" },
-  { key: "Larry 3D 2",           name: "Larry 3D 2        — 3D variant" },
+  { key: "Henry 3D",             name: "Henry 3D          — /.\\ bracket 3D" },
   { key: "Isometric1",           name: "Isometric1        — isometric 3D" },
   { key: "Isometric2",           name: "Isometric2        — isometric alt" },
   { key: "Isometric3",           name: "Isometric3        — isometric alt 2" },
@@ -33,7 +32,7 @@ const FIGLET_FONTS = [
   // ── Modern / Block ───────────────────────────────────
   { key: "ANSI Shadow",          name: "ANSI Shadow       — box-drawing blocks" },
   { key: "DOS Rebel",            name: "DOS Rebel         — filled half-blocks" },
-  { key: "Rebel",                name: "Rebel             — half-block fill" },
+  { key: "Soft",                 name: "Soft              — smooth rounded" },
   { key: "Electronic",           name: "Electronic        — circuit style" },
   { key: "Delta Corps Priest 1", name: "Delta Corps       — dense filled blocks" },
   { key: "Blocks",               name: "Blocks            — bordered block letters" },
@@ -46,7 +45,7 @@ const FIGLET_FONTS = [
   // ── Outlined / Wireframe ─────────────────────────────
   { key: "Star Wars",            name: "Star Wars         — clean outline" },
   { key: "Epic",                 name: "Epic              — arrow decorations" },
-  { key: "Impossible",           name: "Impossible        — geometric wireframe" },
+  { key: "Alpha",                name: "Alpha             — huge diagonal triangles" },
   { key: "Ogre",                 name: "Ogre              — compact outlined" },
   { key: "Varsity",              name: "Varsity           — collegiate outline" },
   { key: "Train",                name: "Train             — elegant small outline" },
@@ -60,18 +59,20 @@ const FIGLET_FONTS = [
   { key: "Fire Font-k",          name: "Fire Font-k       — flame style" },
   { key: "Flower Power",         name: "Flower Power      — highly decorative" },
   { key: "Dancing Font",         name: "Dancing Font      — hand-drawn feel" },
-  { key: "Fraktur",              name: "Fraktur           — gothic calligraphy" },
+  { key: "Jazmine",              name: "Jazmine           — elegant cursive script" },
   { key: "Big Money-ne",         name: "Big Money-ne      — $ symbol art" },
   { key: "Merlin1",              name: "Merlin1           — ornate medieval" },
   // ── Script / Handwritten ─────────────────────────────
-  { key: "NScript",              name: "NScript           — script with serifs" },
-  { key: "NV Script",            name: "NV Script         — flowing script" },
+  { key: "Nancyj",               name: "Nancyj            — elegant dot serif" },
+  { key: "Rowan Cap",            name: "Rowan Cap         — smooth rounded" },
   { key: "Hollywood",            name: "Hollywood         — diagonal screenplay" },
   { key: "Georgia11",            name: "Georgia11         — elegant serif" },
   { key: "Jacky",                name: "Jacky             — clean simple" },
   { key: "Rammstein",            name: "Rammstein         — bordered block" },
   { key: "Chunky",               name: "Chunky            — chunky outlined" },
   { key: "Bulbhead",             name: "Bulbhead          — compact rounded" },
+  // ── Dot / Symbol ─────────────────────────────────
+  { key: "Marquee",              name: "Marquee           — dot-only .:: style" },
 ];
 
 // ── ANSI Colors ──
