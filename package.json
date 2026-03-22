@@ -9,6 +9,14 @@
   "scripts": {
     "start": "node bin/cli.js"
   },
-  "keywords": ["ascii", "banner", "cli", "art"],
-  "license": "MIT"
+  "keywords": [
+    "ascii",
+    "banner",
+    "cli",
+    "art"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "figlet": "^1.11.0"
+  }
 }

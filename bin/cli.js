@@ -9,8 +9,61 @@
 import * as readline from "node:readline";
 import * as fs from "node:fs";
 import * as path from "node:path";
-import { FONTS, DECORATIONS } from "../lib/fonts.js";
+import { DECORATIONS } from "../lib/fonts.js";
 import { renderText, applyDecoration, exportCode } from "../lib/render.js";
+
+// figletのフォント一覧（代表的なものをキュレーション）
+const FIGLET_FONTS = [
+  // ── Classic ──────────────────────────────────────────
+  { key: "Standard",             name: "Standard          — classic ASCII" },
+  { key: "Big",                  name: "Big               — thick blocks" },
+  { key: "Colossal",             name: "Colossal          — large 8-block" },
+  { key: "Banner3",              name: "Banner3           — bold banner" },
+  { key: "Roman",                name: "Roman             — dot serif" },
+  { key: "Broadway",             name: "Broadway          — bold retro" },
+  // ── 3D / Depth ───────────────────────────────────────
+  { key: "Larry 3D",             name: "Larry 3D          — 3D diagonal" },
+  { key: "Larry 3D 2",           name: "Larry 3D 2        — 3D variant" },
+  { key: "Isometric1",           name: "Isometric1        — isometric 3D" },
+  { key: "Isometric2",           name: "Isometric2        — isometric alt" },
+  { key: "Isometric3",           name: "Isometric3        — isometric alt 2" },
+  { key: "3D Diagonal",          name: "3D Diagonal       — deep diagonal 3D" },
+  { key: "Doh",                  name: "Doh               — huge hollow" },
+  // ── Modern / Block ───────────────────────────────────
+  { key: "ANSI Shadow",          name: "ANSI Shadow       — box-drawing blocks" },
+  { key: "DOS Rebel",            name: "DOS Rebel         — filled half-blocks" },
+  { key: "Rebel",                name: "Rebel             — half-block fill" },
+  { key: "Electronic",           name: "Electronic        — circuit style" },
+  { key: "Delta Corps Priest 1", name: "Delta Corps       — dense filled blocks" },
+  { key: "Blocks",               name: "Blocks            — bordered block letters" },
+  // ── Slanted / Motion ─────────────────────────────────
+  { key: "Doom",                 name: "Doom              — diagonal serif" },
+  { key: "Slant",                name: "Slant             — oblique lines" },
+  { key: "Speed",                name: "Speed             — fast slant" },
+  { key: "Lean",                 name: "Lean              — slash aesthetic" },
+  { key: "Graffiti",             name: "Graffiti          — street style" },
+  // ── Outlined / Wireframe ─────────────────────────────
+  { key: "Star Wars",            name: "Star Wars         — clean outline" },
+  { key: "Epic",                 name: "Epic              — arrow decorations" },
+  { key: "Impossible",           name: "Impossible        — geometric wireframe" },
+  { key: "Ogre",                 name: "Ogre              — compact outlined" },
+  { key: "Varsity",              name: "Varsity           — collegiate outline" },
+  { key: "Train",                name: "Train             — elegant small outline" },
+  // ── Decorative / Artistic ────────────────────────────
+  { key: "Shadow",               name: "Shadow            — light shadow" },
+  { key: "Bloody",               name: "Bloody            — textured blocks" },
+  { key: "Alligator",            name: "Alligator         — symbol art (:+#)" },
+  { key: "Poison",               name: "Poison            — @!: symbol art" },
+  { key: "Ghost",                name: "Ghost             — curved symbol art" },
+  { key: "Gothic",               name: "Gothic            — sharp medieval" },
+  { key: "Fire Font-k",          name: "Fire Font-k       — flame style" },
+  { key: "Flower Power",         name: "Flower Power      — highly decorative" },
+  // ── Script / Handwritten ─────────────────────────────
+  { key: "NScript",              name: "NScript           — script with serifs" },
+  { key: "Rammstein",            name: "Rammstein         — bordered block" },
+  { key: "Chunky",               name: "Chunky            — chunky outlined" },
+  { key: "Bulbhead",             name: "Bulbhead          — compact rounded" },
+];
 
 // ── ANSI Colors ──
 const c = {
@@ -83,8 +136,6 @@ async function stepInputText() {
 
 // ─────────── Step 2: フォント選択 ───────────
 async function stepSelectFont(text) {
-  const fontKeys = Object.keys(FONTS);
-
   console.log();
   printLine("─");
   console.log();
@@ -93,13 +144,12 @@ async function stepSelectFont(text) {
   );
   console.log();
 
-  for (let i = 0; i < fontKeys.length; i++) {
-    const key = fontKeys[i];
-    const font = FONTS[key];
+  for (let i = 0; i < FIGLET_FONTS.length; i++) {
+    const { key, name } = FIGLET_FONTS[i];
     const lines = renderText(text, key);
 
     console.log(
-      `  ${c.yellow}${c.bold}[${i + 1}]${c.reset} ${c.white}${font.name}${c.reset}`
+      `  ${c.yellow}${c.bold}[${i + 1}]${c.reset} ${c.white}${name}${c.reset}`
     );
     for (const line of lines) {
       console.log(`  ${c.cyan}${line}${c.reset}`);
@@ -108,16 +158,16 @@ async function stepSelectFont(text) {
   }
 
   const choice = await ask(
-    `  ${c.cyan}番号を入力 (1-${fontKeys.length})${c.reset} > `
+    `  ${c.cyan}番号を入力 (1-${FIGLET_FONTS.length})${c.reset} > `
   );
   const idx = parseInt(choice, 10) - 1;
 
-  if (isNaN(idx) || idx < 0 || idx >= fontKeys.length) {
-    console.log(`\n  ${c.red}1〜${fontKeys.length}の番号を入力してください${c.reset}`);
+  if (isNaN(idx) || idx < 0 || idx >= FIGLET_FONTS.length) {
+    console.log(`\n  ${c.red}1〜${FIGLET_FONTS.length}の番号を入力してください${c.reset}`);
     return stepSelectFont(text);
   }
 
-  return fontKeys[idx];
+  return FIGLET_FONTS[idx].key;
 }
 
 // ─────────── Step 3: 装飾選択 ───────────
