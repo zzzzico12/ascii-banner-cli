@@ -9,6 +9,7 @@
 import * as readline from "node:readline";
 import * as fs from "node:fs";
 import * as path from "node:path";
+import figlet from "figlet";
 import { DECORATIONS } from "../lib/fonts.js";
 import { renderText, applyDecoration, exportCode } from "../lib/render.js";
 import { JP_FONTS, hasJapanese } from "../lib/japanese.js";
@@ -105,18 +106,14 @@ function printLine(char = "─", color = c.gray) {
 function printHeader() {
   console.clear();
   console.log();
-  console.log(
-    `${c.cyan}${c.bold}  ╔═══════════════════════════════════════════════╗${c.reset}`
-  );
-  console.log(
-    `${c.cyan}${c.bold}  ║       ASCII  BANNER  GENERATOR                ║${c.reset}`
-  );
-  console.log(
-    `${c.cyan}${c.bold}  ║       Create CLI banners with ease            ║${c.reset}`
-  );
-  console.log(
-    `${c.cyan}${c.bold}  ╚═══════════════════════════════════════════════╝${c.reset}`
-  );
+  for (const line of figlet.textSync("ASCII BANNER", { font: "ANSI Shadow" }).split("\n")) {
+    console.log(`  ${c.cyan}${c.bold}${line}${c.reset}`);
+  }
+  for (const line of figlet.textSync("GENERATOR", { font: "ANSI Shadow" }).split("\n")) {
+    console.log(`  ${c.magenta}${c.bold}${line}${c.reset}`);
+  }
+  console.log();
+  console.log(`  ${c.gray}  Create CLI banners with ease / CLIバナーを簡単に作成${c.reset}`);
   console.log();
 }
 
