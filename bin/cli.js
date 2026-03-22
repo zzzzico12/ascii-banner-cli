@@ -58,8 +58,16 @@ const FIGLET_FONTS = [
   { key: "Gothic",               name: "Gothic            — sharp medieval" },
   { key: "Fire Font-k",          name: "Fire Font-k       — flame style" },
   { key: "Flower Power",         name: "Flower Power      — highly decorative" },
+  { key: "Dancing Font",         name: "Dancing Font      — hand-drawn feel" },
+  { key: "Fraktur",              name: "Fraktur           — gothic calligraphy" },
+  { key: "Big Money-ne",         name: "Big Money-ne      — $ symbol art" },
+  { key: "Merlin1",              name: "Merlin1           — ornate medieval" },
   // ── Script / Handwritten ─────────────────────────────
   { key: "NScript",              name: "NScript           — script with serifs" },
+  { key: "NV Script",            name: "NV Script         — flowing script" },
+  { key: "Hollywood",            name: "Hollywood         — diagonal screenplay" },
+  { key: "Georgia11",            name: "Georgia11         — elegant serif" },
+  { key: "Jacky",                name: "Jacky             — clean simple" },
   { key: "Rammstein",            name: "Rammstein         — bordered block" },
   { key: "Chunky",               name: "Chunky            — chunky outlined" },
   { key: "Bulbhead",             name: "Bulbhead          — compact rounded" },
@@ -210,7 +218,54 @@ async function stepSelectDecoration(text, fontKey) {
   return decoKeys[idx];
 }
 
-// ─────────── Step 4: エクスポート形式 ───────────
+// ─────────── Step 4: 色選択 ───────────
+async function stepSelectColor() {
+  const COLORS = [
+    { code: "",          label: "Default  (no color / 色なし)" },
+    { code: "\x1b[36m",  label: "Cyan           シアン" },
+    { code: "\x1b[32m",  label: "Green          緑" },
+    { code: "\x1b[33m",  label: "Yellow         黄色" },
+    { code: "\x1b[31m",  label: "Red            赤" },
+    { code: "\x1b[35m",  label: "Magenta        マゼンタ" },
+    { code: "\x1b[34m",  label: "Blue           青" },
+    { code: "\x1b[97m",  label: "White          白" },
+    { code: "\x1b[96m",  label: "Bright Cyan    明るいシアン" },
+    { code: "\x1b[92m",  label: "Bright Green   明るい緑" },
+    { code: "\x1b[93m",  label: "Bright Yellow  明るい黄色" },
+    { code: "\x1b[91m",  label: "Bright Red     明るい赤" },
+    { code: "\x1b[95m",  label: "Bright Magenta 明るいマゼンタ" },
+    { code: "\x1b[94m",  label: "Bright Blue    明るい青" },
+  ];
+
+  console.log();
+  printLine("─");
+  console.log();
+  console.log(
+    `${c.green}${c.bold}  STEP 4${c.reset}  ${c.white}色を選んでください${c.reset}`
+  );
+  console.log();
+
+  for (let i = 0; i < COLORS.length; i++) {
+    const { code, label } = COLORS[i];
+    const swatch = code ? `${code}████${c.reset}` : `${c.gray}────${c.reset}`;
+    console.log(`  ${c.yellow}${c.bold}[${String(i + 1).padStart(2)}]${c.reset}  ${swatch}  ${c.white}${label}${c.reset}`);
+  }
+  console.log();
+
+  const choice = await ask(
+    `  ${c.cyan}番号を入力 (1-${COLORS.length})${c.reset} > `
+  );
+  const idx = parseInt(choice, 10) - 1;
+
+  if (isNaN(idx) || idx < 0 || idx >= COLORS.length) {
+    console.log(`\n  ${c.red}1〜${COLORS.length}の番号を入力してください${c.reset}`);
+    return stepSelectColor();
+  }
+
+  return COLORS[idx].code;
+}
+
+// ─────────── Step 5: エクスポート形式 ───────────
 async function stepSelectFormat() {
   const formats = [
     { key: "raw", name: "プレーンテキスト (.txt)" },
@@ -226,7 +281,7 @@ async function stepSelectFormat() {
   printLine("─");
   console.log();
   console.log(
-    `${c.green}${c.bold}  STEP 4${c.reset}  ${c.white}出力形式を選んでください${c.reset}`
+    `${c.green}${c.bold}  STEP 5${c.reset}  ${c.white}出力形式を選んでください${c.reset}`
   );
   console.log();
 
@@ -250,11 +305,12 @@ async function stepSelectFormat() {
   return formats[idx].key;
 }
 
-// ─────────── Step 5: 出力 ───────────
-async function stepOutput(text, fontKey, decoKey, format) {
+// ─────────── Step 6: 出力 ───────────
+async function stepOutput(text, fontKey, decoKey, colorCode, format) {
   const lines = renderText(text, fontKey);
   const decorated = applyDecoration(lines, decoKey);
-  const code = exportCode(decorated, format);
+  const code = exportCode(decorated, format, colorCode);
+  const previewColor = colorCode || c.white;
 
   console.log();
   printLine("═", c.green);
@@ -266,7 +322,7 @@ async function stepOutput(text, fontKey, decoKey, format) {
   console.log(`${c.gray}  ── プレビュー ──${c.reset}`);
   console.log();
   for (const line of decorated) {
-    console.log(`  ${c.cyan}${line}${c.reset}`);
+    console.log(`  ${previewColor}${line}${c.reset}`);
   }
   console.log();
 
@@ -387,11 +443,12 @@ function printUsageHint(format, filename) {
 // ─────────── Main ───────────
 async function main() {
   printHeader();
-  const text = await stepInputText();
-  const fontKey = await stepSelectFont(text);
-  const decoKey = await stepSelectDecoration(text, fontKey);
-  const format = await stepSelectFormat();
-  await stepOutput(text, fontKey, decoKey, format);
+  const text      = await stepInputText();
+  const fontKey   = await stepSelectFont(text);
+  const decoKey   = await stepSelectDecoration(text, fontKey);
+  const colorCode = await stepSelectColor();
+  const format    = await stepSelectFormat();
+  await stepOutput(text, fontKey, decoKey, colorCode, format);
 }
 
 main().catch((err) => {
