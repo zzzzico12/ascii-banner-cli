@@ -59,31 +59,21 @@ npm start
 
 ### Steps / 操作の流れ
 
-The tool guides you through 6 interactive steps to create your banner:
+The tool guides you through 5 interactive steps to create your banner:
 
-ツールを起動すると、6つのステップで対話的にバナーを作成できます：
+ツールを起動すると、5つのステップで対話的にバナーを作成できます：
 
 ```
   STEP 1  Enter the text to display / 表示したい文字列を入力
-          Supports: A-Z, 0-9 / ひらがな・カタカナ・漢字
-  > MY APP   または   > アプリ名
+          Supports: A-Z, 0-9, space, - .
+  > MY APP
 
-  STEP 2  Choose a font style / フォントを選択
-          [English] 50 figlet fonts with live preview / 50種類のfigletフォント
-          [日本語]  10 tile styles / 日本語入力時はタイルスタイルに自動切替
-
-          ─── English example ──────────────────────
+  STEP 2  Choose a font style / フォントを選択（50種類）
           [ 1] Standard          — classic ASCII
           [ 2] Big               — thick blocks
           ...and 48 more
 
-          ─── 日本語 example ───────────────────────
-          [ 1] Box         ╔══╗  → ║あ║
-          [ 2] Round       ╭──╮  → │い│
-          [ 3] Block       ████  → █う█
-          ...and 7 more
-
-  STEP 3  Choose a decoration style / 25種類の装飾スタイルを選択
+  STEP 3  Choose a decoration style / 装飾を選択（25種類）
           [ 1] None
           [ 2] Box           ╭─────╮
           [ 3] Double        ╔═════╗
@@ -106,15 +96,6 @@ The tool guides you through 6 interactive steps to create your banner:
 Finally, choose to save to a file or display in the terminal.
 
 最後にファイル保存 or ターミナル表示を選べます。
-
-### Japanese mode example / 日本語モードの例
-
-```
-╔══╗  ╔══╗  ╔══╗  ╔══╗
-║ア║  ║プ║  ║リ║  ║名║
-║　║  ║　║  ║　║  ║　║
-╚══╝  ╚══╝  ╚══╝  ╚══╝
-```
 
 ---
 
@@ -167,36 +148,14 @@ print('  v1.0.0\n')
 
 ## Supported Characters / 対応文字
 
-**English mode:** `A-Z` `0-9` `space` `-` `.` `_`
+`A-Z` `0-9` `space` `-` `.` `_`
 
 Lowercase letters are automatically converted to uppercase.
 小文字は自動的に大文字に変換されます。
 
-**Japanese mode (auto-detected):** `ひらがな` `カタカナ` `漢字` and mixed with `A-Z` `0-9`
-
-Japanese input is automatically detected and switches to tile rendering mode.
-日本語が含まれると自動的に日本語タイルモードに切り替わります。
-
 ---
 
-## Japanese Tile Styles (10 total) / 日本語タイルスタイル（10種類）
-
-| Style / スタイル | Preview |
-|----------------|---------|
-| Box | `╔══╗ ║あ║ ╚══╝` |
-| Round | `╭──╮ │あ│ ╰──╯` |
-| Block | `████ █あ█ ████` |
-| Thick | `┏━━┓ ┃あ┃ ┗━━┛` |
-| Shadow | `╔══╗▌ ║あ║▌` |
-| Dots | `●──● │あ│ ●──●` |
-| Tall | `╔════╗ ║ あ ║ ╚════╝` |
-| Tall Round | `╭────╮ │ あ │ ╰────╯` |
-| Tall Thick | `┏━━━━┓ ┃ あ ┃ ┗━━━━┛` |
-| Minimal | `あ ──` |
-
----
-
-## Fonts (50 total) / フォント一覧（50種類・英字用）
+## Fonts (50 total) / フォント一覧（50種類）
 
 | Category / カテゴリ | Fonts / フォント |
 |--------------------|----------------|
