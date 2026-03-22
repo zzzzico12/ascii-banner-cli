@@ -11,6 +11,7 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import { DECORATIONS } from "../lib/fonts.js";
 import { renderText, applyDecoration, exportCode } from "../lib/render.js";
+import { JP_FONTS, hasJapanese } from "../lib/japanese.js";
 
 // figletのフォント一覧（代表的なものをキュレーション）
 const FIGLET_FONTS = [
@@ -125,10 +126,10 @@ async function stepInputText() {
     `${c.green}${c.bold}  STEP 1${c.reset}  ${c.white}表示したい文字列を入力してください${c.reset}`
   );
   console.log(
-    `${c.gray}  対応文字: A-Z, 0-9, スペース, ハイフン, ドット, アンダースコア${c.reset}`
+    `${c.gray}  対応文字: A-Z, 0-9 / ひらがな・カタカナ・漢字${c.reset}`
   );
   console.log(
-    `${c.gray}  推奨: 10文字以内${c.reset}`
+    `${c.gray}  推奨: 英字10文字以内 / 日本語8文字以内${c.reset}`
   );
   console.log();
 
@@ -144,20 +145,26 @@ async function stepInputText() {
 
 // ─────────── Step 2: フォント選択 ───────────
 async function stepSelectFont(text) {
+  const isJP = hasJapanese(text);
+  const fonts = isJP
+    ? Object.entries(JP_FONTS).map(([key, val]) => ({ key: `jp_${key}`, name: val.name }))
+    : FIGLET_FONTS;
+
   console.log();
   printLine("─");
   console.log();
   console.log(
-    `${c.green}${c.bold}  STEP 2${c.reset}  ${c.white}フォントを選んでください${c.reset}`
+    `${c.green}${c.bold}  STEP 2${c.reset}  ${c.white}フォントを選んでください${c.reset}` +
+    (isJP ? `  ${c.gray}(日本語タイルモード)${c.reset}` : "")
   );
   console.log();
 
-  for (let i = 0; i < FIGLET_FONTS.length; i++) {
-    const { key, name } = FIGLET_FONTS[i];
+  for (let i = 0; i < fonts.length; i++) {
+    const { key, name } = fonts[i];
     const lines = renderText(text, key);
 
     console.log(
-      `  ${c.yellow}${c.bold}[${i + 1}]${c.reset} ${c.white}${name}${c.reset}`
+      `  ${c.yellow}${c.bold}[${String(i + 1).padStart(2)}]${c.reset} ${c.white}${name}${c.reset}`
     );
     for (const line of lines) {
       console.log(`  ${c.cyan}${line}${c.reset}`);
@@ -166,16 +173,16 @@ async function stepSelectFont(text) {
   }
 
   const choice = await ask(
-    `  ${c.cyan}番号を入力 (1-${FIGLET_FONTS.length})${c.reset} > `
+    `  ${c.cyan}番号を入力 (1-${fonts.length})${c.reset} > `
   );
   const idx = parseInt(choice, 10) - 1;
 
-  if (isNaN(idx) || idx < 0 || idx >= FIGLET_FONTS.length) {
-    console.log(`\n  ${c.red}1〜${FIGLET_FONTS.length}の番号を入力してください${c.reset}`);
+  if (isNaN(idx) || idx < 0 || idx >= fonts.length) {
+    console.log(`\n  ${c.red}1〜${fonts.length}の番号を入力してください${c.reset}`);
     return stepSelectFont(text);
   }
 
-  return FIGLET_FONTS[idx].key;
+  return fonts[idx].key;
 }
 
 // ─────────── Step 3: 装飾選択 ───────────
