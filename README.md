@@ -1,8 +1,3 @@
-# ASCII Banner Generator
-
-An interactive CLI tool to generate ASCII art banners for your CLI application startup screens.
-
-インタラクティブにASCIIアートバナーを生成するCLIツールです。CLIツールの起動時に表示するバナーを簡単に作成できます。
 
 ```
   ╔═══════════════════════════════════════════════╗
@@ -11,106 +6,117 @@ An interactive CLI tool to generate ASCII art banners for your CLI application s
   ╚═══════════════════════════════════════════════╝
 ```
 
+<div align="center">
+
+# ✦ ASCII Banner Generator
+
+**Turn your CLI app name into stunning ASCII art — in 60 seconds.**
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js](https://img.shields.io/badge/Node.js-v18%2B-green)](https://nodejs.org)
+
+[Quick Start](#-quick-start) · [Features](#-features) · [Examples](#-examples) · [Fonts](#-fonts-50-total)
+
+</div>
+
 ---
 
-## Setup (first time only) / セットアップ（最初の1回だけ）
+## Why ASCII Banner Generator?
 
-### Prerequisites / 前提条件
+You've built a sick CLI tool. Don't let it start with a blank screen.
 
-- **Node.js v18+** must be installed / **Node.js v18以上** がインストールされていること
-
-```bash
-node --version   # v18.0.0 or higher / v18.0.0 以上ならOK
+```
+  ██████╗  ██████╗  ██████╗ ██╗  ██╗███████╗████████╗
+  ██╔══██╗██╔═══██╗██╔════╝ ██║ ██╔╝██╔════╝╚══██╔══╝
+  ██████╔╝██║   ██║██║      █████╔╝ █████╗     ██║
+  ██╔══██╗██║   ██║██║      ██╔═██╗ ██╔══╝     ██║
+  ██║  ██║╚██████╔╝╚██████╗ ██║  ██╗███████╗   ██║
+  ╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚══════╝   ╚═╝
 ```
 
-If Node.js is not installed, get it from https://nodejs.org
+One interactive command. No config files. No design skills needed.
+Just pick a style and get production-ready code — for **7 languages**.
 
-Node.jsがない場合は https://nodejs.org からインストールしてください。
+---
 
-### Installation / インストール手順
+## ✦ Features
+
+- 🎨 **50 ASCII fonts** — from clean classics to wild 3D effects, all with live preview
+- 🖼 **25 decoration styles** — boxes, lines, symbols, shadows and more
+- 🌈 **14 ANSI colors** — with color-coded swatches right in the terminal
+- 📦 **7 export formats** — JavaScript, TypeScript, Python, Rust, Go, Shell, plain text
+- ⚡ **Zero config** — fully interactive, just run and choose
+- 🔌 **Drop-in ready** — generated code plugs straight into your app
+
+---
+
+## 🚀 Quick Start
 
 ```bash
-# 1. Move to this folder / このフォルダに移動
+# Install
+git clone https://github.com/zzzzico12/ascii-banner-cli
 cd ascii-banner-cli
+npm install && npm link
 
-# 2. Install dependencies / 依存パッケージをインストール
-npm install
-
-# 3. Link globally (use from anywhere) / グローバルにリンク（どこからでも使えるようになる）
-npm link
-```
-
----
-
-## Usage / 使い方
-
-### Start / 起動
-
-```bash
+# Run
 ascii-banner
 ```
 
-or / または
-
-```bash
-cd ascii-banner-cli
-npm start
-```
-
-### Steps / 操作の流れ
-
-The tool guides you through 5 interactive steps to create your banner:
-
-ツールを起動すると、5つのステップで対話的にバナーを作成できます：
-
-```
-  STEP 1  Enter the text to display / 表示したい文字列を入力
-          Supports: A-Z, 0-9, space, - .
-  > MY APP
-
-  STEP 2  Choose a font style / フォントを選択（50種類）
-          [ 1] Standard          — classic ASCII
-          [ 2] Big               — thick blocks
-          ...and 48 more
-
-  STEP 3  Choose a decoration style / 装飾を選択（25種類）
-          [ 1] None
-          [ 2] Box           ╭─────╮
-          [ 3] Double        ╔═════╗
-          [ 4] Thick         ┏━━━━━┓
-          ...and 21 more
-
-  STEP 4  Choose a color / 色を選択（14色）
-          [ 1] ────  Default (no color)
-          [ 2] ████  Cyan
-          [ 3] ████  Green
-          ...and 11 more
-
-  STEP 5  Choose output format / 出力形式を選択
-          [1] Plain text / プレーンテキスト
-          [2] JavaScript   [3] TypeScript
-          [4] Python       [5] Rust
-          [6] Go           [7] Shell
-```
-
-Finally, choose to save to a file or display in the terminal.
-
-最後にファイル保存 or ターミナル表示を選べます。
+That's it. The tool walks you through everything.
 
 ---
 
-## Generated Code Examples / 生成されるコードの例
+## ✦ Examples
 
-### JavaScript (with color / 色付き)
+### ANSI Shadow + Double Box + Cyan
 
+```
+  ╔══════════════════════════════════════════════════════╗
+  ║  ███╗   ███╗██╗   ██╗     █████╗ ██████╗ ██████╗   ║
+  ║  ████╗ ████║╚██╗ ██╔╝    ██╔══██╗██╔══██╗██╔══██╗  ║
+  ║  ██╔████╔██║ ╚████╔╝     ███████║██████╔╝██████╔╝  ║
+  ║  ██║╚██╔╝██║  ╚██╔╝      ██╔══██║██╔═══╝ ██╔═══╝   ║
+  ║  ██║ ╚═╝ ██║   ██║       ██║  ██║██║     ██║       ║
+  ╚══════════════════════════════════════════════════════╝
+```
+
+### Doom + Stars + Green
+
+```
+  ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦
+   ______  ______  ______  __   __  ______
+  /\  ___\/\  == \/\  __ \/\ "-.\ \/\__  _\
+  \ \  __\\ \  __<\ \ \/\ \ \ \-.  \/_/\ \/
+   \ \_\   \ \_\ \_\ \_____\ \_\\"\_\  \ \_\
+    \/_/    \/_/ /_/\/_____/\/_/ \/_/   \/_/
+  ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦
+```
+
+### Larry 3D + Thick Box + Magenta
+
+```
+  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+  ┃   /'\_/`\  /\  _`\  /\  _`\               ┃
+  ┃  /\      \/\ \L\_\ \\ \ \/\_\             ┃
+  ┃  \ \ \__\ \ \  _\L  \ \ \/_/_             ┃
+  ┃   \ \ \_/\ \ \ \L\ \ \ \ \L\ \            ┃
+  ┃    \ \_\\ \_\ \____/  \ \____/            ┃
+  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+```
+
+---
+
+## ✦ Generated Code
+
+Pick your language — the tool writes the code for you.
+
+**JavaScript / TypeScript**
 ```javascript
 // ── ASCII Banner ──────────────────────────────
 const banner = `
- ██   ██ ██   ██     ██████  ██      ██████
- ███ ███  ██ ██     ██       ██        ██
- ██ █ ██   ███      ██       ██        ██
- ██   ██   ██       ██       ██        ██
- ██   ██   ██        ██████  ███████ ██████
+  ╔═══════════════╗
+  ║   MY  APP     ║
+  ╚═══════════════╝
 `;
 
 export function printBanner() {
@@ -118,104 +124,90 @@ export function printBanner() {
 }
 ```
 
-### Integrating into your CLI app / あなたのCLIアプリに組み込む
-
-```javascript
-#!/usr/bin/env node
-
-// Import banner.js / banner.js をインポート
-import { printBanner } from './banner.js';
-
-// Display banner on startup / 起動時にバナー表示
-printBanner();
-console.log('  v1.0.0\n');
-
-// Continue with your CLI logic... / ここから通常のCLI処理...
-```
-
-### Python
-
+**Python**
 ```python
-from banner import print_banner
+BANNER = """
+  ╔═══════════════╗
+  ║   MY  APP     ║
+  ╚═══════════════╝
+"""
 
-print_banner()
-print('  v1.0.0\n')
-
-# Continue with your CLI logic... / ここから通常のCLI処理...
+def print_banner():
+    print(f"\033[36m{BANNER}\033[0m")
 ```
 
----
-
-## Supported Characters / 対応文字
-
-`A-Z` `0-9` `space` `-` `.` `_`
-
-Lowercase letters are automatically converted to uppercase.
-小文字は自動的に大文字に変換されます。
+**Rust · Go · Shell** — all supported with proper escape sequences.
 
 ---
 
-## Fonts (50 total) / フォント一覧（50種類）
+## ✦ Fonts (50 total)
 
-| Category / カテゴリ | Fonts / フォント |
-|--------------------|----------------|
+| Category | Fonts |
+|----------|-------|
 | Classic | Standard, Big, Colossal, Banner3, Roman, Broadway |
 | 3D / Depth | Larry 3D, Larry 3D 2, Isometric1–3, 3D Diagonal, Doh |
 | Modern / Block | ANSI Shadow, DOS Rebel, Rebel, Electronic, Delta Corps, Blocks |
 | Slanted / Motion | Doom, Slant, Speed, Lean, Graffiti |
 | Outlined / Wireframe | Star Wars, Epic, Impossible, Ogre, Varsity, Train |
-| Decorative / Artistic | Shadow, Bloody, Alligator, Poison, Ghost, Gothic, Fire Font-k, Flower Power, Dancing Font, Fraktur, Big Money-ne, Merlin1 |
-| Script / Handwritten | NScript, NV Script, Hollywood, Georgia11, Jacky, Rammstein, Chunky, Bulbhead |
+| Decorative | Shadow, Bloody, Alligator, Poison, Ghost, Gothic, Fire Font-k, Flower Power, Dancing Font, Fraktur, Big Money-ne, Merlin1 |
+| Script | NScript, NV Script, Hollywood, Georgia11, Jacky, Rammstein, Chunky, Bulbhead |
+
+> Every font renders a **live preview** of your actual text before you pick.
 
 ---
 
-## Decorations (25 total) / 装飾一覧（25種類）
+## ✦ Decorations (25 total)
 
-| Category / カテゴリ | Styles / スタイル |
-|--------------------|-----------------|
-| Box | Box `╭─╮`, Double `╔═╗`, Thick `┏━┓`, Retro `+-+`, Hash `##`, Shadow Box, Equals `===`, Sharp `┌─┐` |
-| Line | Underline `━━━`, Overline `▔▔▔`, Sandwich `═══`, Bracket Bar `╠═╣`, Dashed `- -` |
-| Symbol | Stars `✦✧`, Dots `··`, Diamond `◆◇`, Wave `〜`, Hearts `♥♡`, Zigzag `/\/\` |
-| Side | Pipes `║ ║`, Arrows `>> <<`, Cyber Sides `▓▒░`, Slash Sides `// \\`, Wings `~~>` |
-
----
-
-## Colors (14 options) / カラー（14色）
-
-| Color / 色 | ANSI Code |
-|-----------|-----------|
-| Default (no color) | — |
-| Cyan / シアン | `\x1b[36m` |
-| Green / 緑 | `\x1b[32m` |
-| Yellow / 黄色 | `\x1b[33m` |
-| Red / 赤 | `\x1b[31m` |
-| Magenta / マゼンタ | `\x1b[35m` |
-| Blue / 青 | `\x1b[34m` |
-| White / 白 | `\x1b[97m` |
-| Bright Cyan / 明るいシアン | `\x1b[96m` |
-| Bright Green / 明るい緑 | `\x1b[92m` |
-| Bright Yellow / 明るい黄色 | `\x1b[93m` |
-| Bright Red / 明るい赤 | `\x1b[91m` |
-| Bright Magenta / 明るいマゼンタ | `\x1b[95m` |
-| Bright Blue / 明るい青 | `\x1b[94m` |
+| Category | Styles |
+|----------|--------|
+| Box | `╭─╮` Box, `╔═╗` Double, `┏━┓` Thick, `+-+` Retro, `##` Hash, Shadow Box, `===` Equals, `┌─┐` Sharp |
+| Line | `━━━` Underline, `▔▔▔` Overline, `═══` Sandwich, `╠═╣` Bracket Bar, `- -` Dashed |
+| Symbol | `✦✧` Stars, `··` Dots, `◆◇` Diamond, `〜` Wave, `♥♡` Hearts, `/\/\` Zigzag |
+| Side | `║ ║` Pipes, `>> <<` Arrows, `▓▒░` Cyber, `// \\` Slash, `~~>` Wings |
 
 ---
 
-## File Structure / ファイル構成
+## ✦ Colors (14)
+
+`Default` · `Cyan` · `Green` · `Yellow` · `Red` · `Magenta` · `Blue` · `White`
+`Bright Cyan` · `Bright Green` · `Bright Yellow` · `Bright Red` · `Bright Magenta` · `Bright Blue`
+
+Colors are embedded directly into the exported code as ANSI escape sequences.
+
+---
+
+## ✦ How to use the output
+
+```javascript
+// your-cli-app.js
+import { printBanner } from './banner.js';
+
+printBanner();           // ← your ASCII banner
+console.log('  v1.0.0\n');
+// ... rest of your app
+```
+
+---
+
+## File Structure
 
 ```
 ascii-banner-cli/
 ├── bin/
-│   └── cli.js          # CLI entry point / CLIのエントリーポイント
+│   └── cli.js       # CLI entry point
 ├── lib/
-│   ├── fonts.js        # Decoration styles / 装飾スタイル定義
-│   └── render.js       # Rendering & export / レンダリング & エクスポート
+│   ├── fonts.js     # Decoration definitions
+│   └── render.js    # Rendering & code export
 ├── package.json
 └── README.md
 ```
 
 ---
 
-## License / ライセンス
+<div align="center">
 
-MIT
+**If this saved you time, leave a ⭐**
+
+MIT License
+
+</div>
