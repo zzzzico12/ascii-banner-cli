@@ -50,7 +50,7 @@ function printHeader() {
     `${c.cyan}${c.bold}  ║       ASCII  BANNER  GENERATOR                ║${c.reset}`
   );
   console.log(
-    `${c.cyan}${c.bold}  ║       CLIバナーを簡単に作成                   ║${c.reset}`
+    `${c.cyan}${c.bold}  ║       Create CLI banners with ease            ║${c.reset}`
   );
   console.log(
     `${c.cyan}${c.bold}  ╚═══════════════════════════════════════════════╝${c.reset}`
