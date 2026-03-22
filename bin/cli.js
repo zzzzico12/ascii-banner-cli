@@ -106,10 +106,10 @@ function printLine(char = "─", color = c.gray) {
 function printHeader() {
   console.clear();
   console.log();
-  for (const line of figlet.textSync("ASCII BANNER", { font: "ANSI Shadow" }).split("\n")) {
+  for (const line of figlet.textSync("ASCII BANNER", { font: "Big Money-ne" }).split("\n")) {
     console.log(`  ${c.cyan}${c.bold}${line}${c.reset}`);
   }
-  for (const line of figlet.textSync("GENERATOR", { font: "ANSI Shadow" }).split("\n")) {
+  for (const line of figlet.textSync("GENERATOR", { font: "Big Money-ne" }).split("\n")) {
     console.log(`  ${c.magenta}${c.bold}${line}${c.reset}`);
   }
   console.log();
