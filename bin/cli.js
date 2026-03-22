@@ -123,20 +123,20 @@ function printHeader() {
 // ─────────── Step 1: テキスト入力 ───────────
 async function stepInputText() {
   console.log(
-    `${c.green}${c.bold}  STEP 1${c.reset}  ${c.white}表示したい文字列を入力してください${c.reset}`
+    `${c.green}${c.bold}  STEP 1${c.reset}  ${c.white}Enter the text to display / 表示したい文字列を入力してください${c.reset}`
   );
   console.log(
-    `${c.gray}  対応文字: A-Z, 0-9 / ひらがな・カタカナ・漢字${c.reset}`
+    `${c.gray}  Supported / 対応文字: A-Z, 0-9 / ひらがな・カタカナ・漢字${c.reset}`
   );
   console.log(
-    `${c.gray}  推奨: 英字10文字以内 / 日本語8文字以内${c.reset}`
+    `${c.gray}  Recommended / 推奨: up to 10 chars (EN) / 英字10文字以内, up to 8 chars (JP) / 日本語8文字以内${c.reset}`
   );
   console.log();
 
   const text = await ask(`  ${c.cyan}>${c.reset} `);
 
   if (!text.trim()) {
-    console.log(`\n  ${c.red}文字列を入力してください${c.reset}\n`);
+    console.log(`\n  ${c.red}Please enter some text / 文字列を入力してください${c.reset}\n`);
     return stepInputText();
   }
 
@@ -154,8 +154,8 @@ async function stepSelectFont(text) {
   printLine("─");
   console.log();
   console.log(
-    `${c.green}${c.bold}  STEP 2${c.reset}  ${c.white}フォントを選んでください${c.reset}` +
-    (isJP ? `  ${c.gray}(日本語タイルモード)${c.reset}` : "")
+    `${c.green}${c.bold}  STEP 2${c.reset}  ${c.white}Choose a font / フォントを選んでください${c.reset}` +
+    (isJP ? `  ${c.gray}(Japanese tile mode / 日本語タイルモード)${c.reset}` : "")
   );
   console.log();
 
@@ -173,12 +173,12 @@ async function stepSelectFont(text) {
   }
 
   const choice = await ask(
-    `  ${c.cyan}番号を入力 (1-${fonts.length})${c.reset} > `
+    `  ${c.cyan}Enter number / 番号を入力 (1-${fonts.length})${c.reset} > `
   );
   const idx = parseInt(choice, 10) - 1;
 
   if (isNaN(idx) || idx < 0 || idx >= fonts.length) {
-    console.log(`\n  ${c.red}1〜${fonts.length}の番号を入力してください${c.reset}`);
+    console.log(`\n  ${c.red}Please enter 1–${fonts.length} / 1〜${fonts.length}の番号を入力してください${c.reset}`);
     return stepSelectFont(text);
   }
 
@@ -193,7 +193,7 @@ async function stepSelectDecoration(text, fontKey) {
   printLine("─");
   console.log();
   console.log(
-    `${c.green}${c.bold}  STEP 3${c.reset}  ${c.white}装飾を選んでください${c.reset}`
+    `${c.green}${c.bold}  STEP 3${c.reset}  ${c.white}Choose a decoration / 装飾を選んでください${c.reset}`
   );
   console.log();
 
@@ -213,12 +213,12 @@ async function stepSelectDecoration(text, fontKey) {
   }
 
   const choice = await ask(
-    `  ${c.cyan}番号を入力 (1-${decoKeys.length})${c.reset} > `
+    `  ${c.cyan}Enter number / 番号を入力 (1-${decoKeys.length})${c.reset} > `
   );
   const idx = parseInt(choice, 10) - 1;
 
   if (isNaN(idx) || idx < 0 || idx >= decoKeys.length) {
-    console.log(`\n  ${c.red}1〜${decoKeys.length}の番号を入力してください${c.reset}`);
+    console.log(`\n  ${c.red}Please enter 1–${decoKeys.length} / 1〜${decoKeys.length}の番号を入力してください${c.reset}`);
     return stepSelectDecoration(text, fontKey);
   }
 
@@ -248,7 +248,7 @@ async function stepSelectColor() {
   printLine("─");
   console.log();
   console.log(
-    `${c.green}${c.bold}  STEP 4${c.reset}  ${c.white}色を選んでください${c.reset}`
+    `${c.green}${c.bold}  STEP 4${c.reset}  ${c.white}Choose a color / 色を選んでください${c.reset}`
   );
   console.log();
 
@@ -260,12 +260,12 @@ async function stepSelectColor() {
   console.log();
 
   const choice = await ask(
-    `  ${c.cyan}番号を入力 (1-${COLORS.length})${c.reset} > `
+    `  ${c.cyan}Enter number / 番号を入力 (1-${COLORS.length})${c.reset} > `
   );
   const idx = parseInt(choice, 10) - 1;
 
   if (isNaN(idx) || idx < 0 || idx >= COLORS.length) {
-    console.log(`\n  ${c.red}1〜${COLORS.length}の番号を入力してください${c.reset}`);
+    console.log(`\n  ${c.red}Please enter 1–${COLORS.length} / 1〜${COLORS.length}の番号を入力してください${c.reset}`);
     return stepSelectColor();
   }
 
@@ -275,20 +275,20 @@ async function stepSelectColor() {
 // ─────────── Step 5: エクスポート形式 ───────────
 async function stepSelectFormat() {
   const formats = [
-    { key: "raw", name: "プレーンテキスト (.txt)" },
+    { key: "raw",        name: "Plain text / プレーンテキスト (.txt)" },
     { key: "javascript", name: "JavaScript (.js)" },
     { key: "typescript", name: "TypeScript (.ts)" },
-    { key: "python", name: "Python (.py)" },
-    { key: "rust", name: "Rust (.rs)" },
-    { key: "go", name: "Go (.go)" },
-    { key: "shell", name: "Shell (.sh)" },
+    { key: "python",     name: "Python (.py)" },
+    { key: "rust",       name: "Rust (.rs)" },
+    { key: "go",         name: "Go (.go)" },
+    { key: "shell",      name: "Shell (.sh)" },
   ];
 
   console.log();
   printLine("─");
   console.log();
   console.log(
-    `${c.green}${c.bold}  STEP 5${c.reset}  ${c.white}出力形式を選んでください${c.reset}`
+    `${c.green}${c.bold}  STEP 5${c.reset}  ${c.white}Choose output format / 出力形式を選んでください${c.reset}`
   );
   console.log();
 
@@ -300,12 +300,12 @@ async function stepSelectFormat() {
   console.log();
 
   const choice = await ask(
-    `  ${c.cyan}番号を入力 (1-${formats.length})${c.reset} > `
+    `  ${c.cyan}Enter number / 番号を入力 (1-${formats.length})${c.reset} > `
   );
   const idx = parseInt(choice, 10) - 1;
 
   if (isNaN(idx) || idx < 0 || idx >= formats.length) {
-    console.log(`\n  ${c.red}1〜${formats.length}の番号を入力してください${c.reset}`);
+    console.log(`\n  ${c.red}Please enter 1–${formats.length} / 1〜${formats.length}の番号を入力してください${c.reset}`);
     return stepSelectFormat();
   }
 
@@ -322,11 +322,11 @@ async function stepOutput(text, fontKey, decoKey, colorCode, format) {
   console.log();
   printLine("═", c.green);
   console.log();
-  console.log(`${c.green}${c.bold}  ✔ 生成完了！${c.reset}`);
+  console.log(`${c.green}${c.bold}  ✔ Done! / 生成完了！${c.reset}`);
   console.log();
 
   // プレビュー
-  console.log(`${c.gray}  ── プレビュー ──${c.reset}`);
+  console.log(`${c.gray}  ── Preview / プレビュー ──${c.reset}`);
   console.log();
   for (const line of decorated) {
     console.log(`  ${previewColor}${line}${c.reset}`);
@@ -337,16 +337,16 @@ async function stepOutput(text, fontKey, decoKey, colorCode, format) {
   printLine("─");
   console.log();
   console.log(
-    `${c.white}  ファイルに保存しますか？${c.reset}`
+    `${c.white}  Save to file? / ファイルに保存しますか？${c.reset}`
   );
   console.log(
-    `  ${c.yellow}[1]${c.reset} ファイルに保存する`
+    `  ${c.yellow}[1]${c.reset} Save to file / ファイルに保存する`
   );
   console.log(
-    `  ${c.yellow}[2]${c.reset} ターミナルに表示するだけ（コピペ用）`
+    `  ${c.yellow}[2]${c.reset} Print to terminal (copy & paste) / ターミナルに表示するだけ（コピペ用）`
   );
   console.log(
-    `  ${c.yellow}[3]${c.reset} 最初からやり直す`
+    `  ${c.yellow}[3]${c.reset} Start over / 最初からやり直す`
   );
   console.log();
 
@@ -368,14 +368,14 @@ async function stepOutput(text, fontKey, decoKey, colorCode, format) {
 
     console.log();
     const filename = await ask(
-      `  ${c.cyan}ファイル名 (Enter で ${defaultName})${c.reset} > `
+      `  ${c.cyan}Filename / ファイル名 (Enter for ${defaultName})${c.reset} > `
     );
     const finalName = filename.trim() || defaultName;
     const outputPath = path.resolve(process.cwd(), finalName);
 
     fs.writeFileSync(outputPath, code, "utf-8");
     console.log();
-    console.log(`  ${c.green}${c.bold}✔ 保存しました:${c.reset} ${outputPath}`);
+    console.log(`  ${c.green}${c.bold}✔ Saved / 保存しました:${c.reset} ${outputPath}`);
     console.log();
     printUsageHint(format, finalName);
   } else if (choice.trim() === "3") {
@@ -385,7 +385,7 @@ async function stepOutput(text, fontKey, decoKey, colorCode, format) {
     console.log();
     printLine("─");
     console.log();
-    console.log(`${c.gray}  ── 以下をコピーしてください ──${c.reset}`);
+    console.log(`${c.gray}  ── Copy the output below / 以下をコピーしてください ──${c.reset}`);
     console.log();
     console.log(code);
     console.log();
@@ -395,7 +395,7 @@ async function stepOutput(text, fontKey, decoKey, colorCode, format) {
   // 続けるか確認
   console.log();
   const again = await ask(
-    `  ${c.cyan}別のバナーを作りますか？ (y/N)${c.reset} > `
+    `  ${c.cyan}Create another banner? / 別のバナーを作りますか？ (y/N)${c.reset} > `
   );
   if (again.trim().toLowerCase() === "y") {
     return main();
@@ -408,41 +408,41 @@ async function stepOutput(text, fontKey, decoKey, colorCode, format) {
 }
 
 function printUsageHint(format, filename) {
-  console.log(`${c.gray}  ── 使い方 ──${c.reset}`);
+  console.log(`${c.gray}  ── How to use / 使い方 ──${c.reset}`);
   console.log();
 
   switch (format) {
     case "javascript":
-      console.log(`  ${c.dim}// あなたのCLIアプリ (例: cli.js) で:${c.reset}`);
+      console.log(`  ${c.dim}// In your CLI app (e.g. cli.js) / あなたのCLIアプリ (例: cli.js) で:${c.reset}`);
       console.log(`  ${c.white}import { printBanner } from './${filename}';${c.reset}`);
       console.log(`  ${c.white}printBanner();${c.reset}`);
       break;
     case "typescript":
-      console.log(`  ${c.dim}// あなたのCLIアプリで:${c.reset}`);
+      console.log(`  ${c.dim}// In your CLI app / あなたのCLIアプリで:${c.reset}`);
       console.log(`  ${c.white}import { printBanner } from './${filename.replace(".ts", "")}';${c.reset}`);
       console.log(`  ${c.white}printBanner();${c.reset}`);
       break;
     case "python":
-      console.log(`  ${c.dim}# あなたのCLIアプリで:${c.reset}`);
+      console.log(`  ${c.dim}# In your CLI app / あなたのCLIアプリで:${c.reset}`);
       console.log(`  ${c.white}from ${filename.replace(".py", "")} import print_banner${c.reset}`);
       console.log(`  ${c.white}print_banner()${c.reset}`);
       break;
     case "rust":
-      console.log(`  ${c.dim}// main.rs で:${c.reset}`);
+      console.log(`  ${c.dim}// In main.rs / main.rs で:${c.reset}`);
       console.log(`  ${c.white}mod banner;${c.reset}`);
       console.log(`  ${c.white}banner::print_banner();${c.reset}`);
       break;
     case "go":
-      console.log(`  ${c.dim}// main.go の main() で:${c.reset}`);
+      console.log(`  ${c.dim}// In main() of main.go / main.go の main() で:${c.reset}`);
       console.log(`  ${c.white}PrintBanner()${c.reset}`);
       break;
     case "shell":
-      console.log(`  ${c.dim}# シェルスクリプトで:${c.reset}`);
+      console.log(`  ${c.dim}# In your shell script / シェルスクリプトで:${c.reset}`);
       console.log(`  ${c.white}source ${filename}${c.reset}`);
       console.log(`  ${c.white}print_banner${c.reset}`);
       break;
     default:
-      console.log(`  ${c.dim}ファイルの内容をそのまま使えます${c.reset}`);
+      console.log(`  ${c.dim}Use the file contents as-is / ファイルの内容をそのまま使えます${c.reset}`);
   }
   console.log();
 }
